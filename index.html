@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonsuza Dek Biz</title>
+    <style>
+        body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+        .container { position: relative; width: 100%; max-width: 500px; height: 100vh; background: url('askim.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); }
+        .content { z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        #days { font-size: 5rem; font-weight: bold; text-shadow: 2px 2px 15px rgba(0,0,0,0.8); margin: 0; }
+        .text-small { font-size: 1.2rem; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); margin-bottom: 20px; }
+        .soz-box { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); margin: 20px; padding: 20px; border-radius: 20px; font-style: italic; max-width: 80%; border: 1px solid rgba(255,255,255,0.3); font-size: 1.1rem; min-height: 60px; display: flex; align-items: center; justify-content: center; color: #fff; }
+        button { background: #ff4b6e; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 75, 110, 0.5); transition: 0.3s; }
+        button:disabled { background: #888; cursor: not-allowed; box-shadow: none; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="overlay"></div>
+        <div class="content">
+            <div id="days">...</div>
+            <div class="text-small">gündür seninle her şey daha güzel!</div>
+            <div id="soz-ekrani" class="soz-box">Günün aşk sözünü görmek için butona tıkla ❤️</div>
+            <button id="mainButton" onclick="sozGetir()">Günün Sözünü Oku</button>
+        </div>
+    </div>
+    <script>
+        const tanismaTarihi = new Date(2021, 11, 1); 
+        const sozler = [
+            "Seninle geçen her gün, hayatımın en güzel hikayesi.",
+            "Gülüşün, dünyadaki tüm dertlerimi unutturuyor.",
+            "Seni sevmek, başıma gelen en güzel şey.",
+            "İyi ki o gün yollarımız kesişmiş sevgilim.",
+            "Sonsuzluğa kadar, sadece biz...",
+            "Sen benim en güzel iyikimsin.",
+            "Her gün uyandığımda seni sevmek için yeni bir nedenim var.",
+            "Seninle yaşlanmak, hayallerimin en güzeli."
+        ];
+
+        function guncelle() {
+            const fark = Math.floor((new Date() - tanismaTarihi) / (1000 * 60 * 60 * 24));
+            document.getElementById('days').innerText = fark;
+            
+            // Bugün basıldı mı kontrol et
+            const sonBasim = localStorage.getItem('sonBasimTarihi');
+            const bugun = new Date().toDateString();
+            
+            if (sonBasim === bugun) {
+                document.getElementById('mainButton').disabled = true;
+                document.getElementById('mainButton').innerText = "Yarın Tekrar Gel ❤️";
+                document.getElementById('soz-ekrani').innerText = localStorage.getItem('bugunkuSoz');
+            }
+        }
+
+        function sozGetir() {
+            const bugun = new Date().toDateString();
+            const rastgeleSoz = sozler[Math.floor(Math.random() * sozler.length)];
+            
+            document.getElementById('soz-ekrani').innerText = rastgeleSoz;
+            document.getElementById('mainButton').disabled = true;
+            document.getElementById('mainButton').innerText = "Yarın Tekrar Gel ❤️";
+            
+            // Verileri kaydet
+            localStorage.setItem('sonBasimTarihi', bugun);
+            localStorage.setItem('bugunkuSoz', rastgeleSoz);
+        }
+
+        guncelle();
+    </script>
+</body>
+</html>
